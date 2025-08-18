@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "name": "docs-manifest",
+  "version": "1.0.0",
+  "description": "A tool to extract PDF file paths from a JSON manifest.",
+  "scripts": {
+    "start": "tsx main.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0"
+  }
+}
