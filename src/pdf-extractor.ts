@@ -4,15 +4,14 @@
  * @param node The JSON object or array to search.
  * @param filePaths A Set to store the found PDF file paths.
  */
-function findFileNames(node: object, filePaths: Set<string>): void {
+function findFileNames(node: any, filePaths: Set<string>): void {
+  if (typeof node === 'string' && node.endsWith('.pdf')) {
+    filePaths.add(node);
+    return;
+  }
+
   if (Array.isArray(node)) {
-    // If all items are strings ending in .pdf, add them to the set
-    if (node.every((item): item is string => typeof item === 'string' && item.endsWith('.pdf'))) {
-      node.forEach(file => filePaths.add(file));
-    } else {
-      // Otherwise, recurse into each item
-      node.forEach(item => findFileNames(item, filePaths));
-    }
+    node.forEach(item => findFileNames(item, filePaths));
     return;
   }
 
