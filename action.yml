@@ -1,0 +1,12 @@
+name: 'Docs Manifest Validator'
+description: 'Validates that PDF documents specified in a remote manifest file exist in the current repository.'
+inputs:
+  manifest-url:
+    description: 'The full raw URL to the docs-manifest.json file (e.g., https://raw.githubusercontent.com/owner/repo/main/docs-manifest.json).'
+    required: true
+  token:
+    description: 'A Personal Access Token (PAT) with permission to read the source repository.'
+    required: true
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

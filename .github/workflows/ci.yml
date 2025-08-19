@@ -1,29 +1,27 @@
-name: Run PDF Manifest Extractor
+name: 'Docs Validator CI'
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 jobs:
-  build:
+  test_action:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check out code
-      uses: actions/checkout@v4
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: 'Install dependencies'
+        run: npm install
 
-    - name: Install dependencies
-      run: npm install
+      - name: 'Package the action'
+        run: npm run package
 
-    - name: Type check
-      run: npx tsc --noEmit
+      - name: 'Create dummy PDF files for testing'
+        run: |
+          mkdir -p shared
+          touch "shared/doc_template_cover.pdf" "shared/form_template_a.pdf" "shared/form_template_b.pdf" "shared/form_template_c.pdf"
 
-    - name: Run script
-      run: npm start
+      - name: 'Run the action'
+        uses: ./
+        with:
+          manifest-url: ${{ secrets.MANIFEST_URL }}
+          token: ${{ secrets.DOCS_REPO_PAT }}

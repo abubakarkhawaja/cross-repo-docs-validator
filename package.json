@@ -1,16 +1,20 @@
 {
-  "type": "module",
-  "name": "docs-manifest",
+  "name": "docs-validator-action",
   "version": "1.0.0",
-  "description": "A tool to extract PDF file paths from a JSON manifest.",
+  "description": "A GitHub Action to validate PDF documents from a remote manifest.",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "tsx main.ts"
+    "build": "tsc",
+    "package": "ncc build src/index.ts --out dist --source-map --license licenses.txt"
   },
   "dependencies": {
-    "tsx": "^4.20.4",
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "axios": "^1.7.2",
     "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@types/node": "^24.3.0"
+    "@types/node": "^24.3.0",
+    "@vercel/ncc": "^0.38.1"
   }
 }
