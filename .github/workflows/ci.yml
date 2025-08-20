@@ -15,6 +15,14 @@ jobs:
       - name: 'Run tests'
         run: npm test
 
+      - name: 'Create dummy PDF files'
+        run: |
+          mkdir -p shared
+          touch shared/doc_template_cover.pdf
+          touch shared/form_template_a.pdf
+          touch shared/form_template_b.pdf
+          touch shared/form_template_c.pdf
+
       - name: 'Run validation script'
         env:
           MANIFEST_URL: ${{ secrets.MANIFEST_URL }}
