@@ -18,13 +18,9 @@ jobs:
       - name: 'Package the action'
         run: npm run package
 
-      - name: 'Create dummy PDF files for testing'
-        run: |
-          mkdir -p shared
-          touch "shared/doc_template_cover.pdf" "shared/form_template_a.pdf" "shared/form_template_b.pdf" "shared/form_template_c.pdf"
-
       - name: 'Run the action'
         uses: ./
         with:
           manifest-url: ${{ secrets.MANIFEST_URL }}
           token: ${{ secrets.DOCS_REPO_PAT }}
+          repo-url: ${{ secrets.REPO_URL }}

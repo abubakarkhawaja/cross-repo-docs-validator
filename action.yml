@@ -7,6 +7,9 @@ inputs:
   token:
     description: 'A Personal Access Token (PAT) with permission to read the source repository.'
     required: true
+  repo-url:
+    description: 'The URL of the repository to check for documents.'
+    required: true
 runs:
   using: 'node20'
   main: 'dist/index.js'

@@ -1,10 +1,10 @@
-# Docs Manifest Validator
+# Docs Manifest Validator Action
 
-This GitHub Action validates that all PDF documents specified in a remote JSON manifest file exist in the current repository.
+This GitHub Action validates that all PDF documents specified in a remote JSON manifest file exist in a *specified remote GitHub repository*.
 
 ## How it Works
 
-The action fetches a JSON manifest file from a specified URL. It then recursively searches through the manifest to find all values that end with `.pdf`. Finally, it checks for the existence of each of these PDF files in the local repository and fails the action if any are missing.
+The action fetches a JSON manifest file from a specified URL. It then recursively searches through the manifest to find all values that end with `.pdf`. Finally, it uses the GitHub API to check for the existence of each of these PDF files in the specified remote repository and fails the action if any are missing.
 
 ## Usage
 
@@ -27,12 +27,14 @@ jobs:
         with:
           manifest-url: ${{ secrets.MANIFEST_URL }}
           token: ${{ secrets.DOCS_REPO_PAT }}
+          repo-url: ${{ secrets.REPO_URL }}
 ```
 
 ### Inputs
 
 - `manifest-url` (required): The full raw URL to the `docs-manifest.json` file (e.g., `https://raw.githubusercontent.com/owner/repo/main/docs-manifest.json`).
-- `token` (required): A Personal Access Token (PAT) with permission to read the source repository where the manifest file is located.
+- `token` (required): A Personal Access Token (PAT) with permission to read the source repository where the manifest file is located, and the `repo-url`.
+- `repo-url` (required): The URL of the GitHub repository to check for the existence of documents (e.g., `https://github.com/owner/repo-to-check`).
 
 ### Example Manifest File
 
@@ -63,3 +65,9 @@ npm run package
 ```
 
 This will install the dependencies and package the action into a single file in the `dist` directory.
+
+To run the tests, use:
+
+```bash
+npm test
+```
