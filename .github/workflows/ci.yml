@@ -28,5 +28,4 @@ jobs:
           MANIFEST_URL: ${{ secrets.MANIFEST_URL }}
           DOCS_REPO_PAT: ${{ secrets.DOCS_REPO_PAT }}
         run: |
-          npm run build
-          node dist/index.js
+          npm run start

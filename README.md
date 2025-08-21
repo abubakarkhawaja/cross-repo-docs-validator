@@ -13,12 +13,10 @@ To use this script, you need to set the following environment variables:
 - `MANIFEST_URL`: The full raw URL to the `docs-manifest.json` file (e.g., `https://raw.githubusercontent.com/owner/repo/main/docs-manifest.json`).
 - `DOCS_REPO_PAT`: A Personal Access Token (PAT) with permission to read the source repository where the manifest file is located.
 
-Then, you can run the script from the command line:
+Then, you can install dependencies from the command line:
 
 ```bash
 npm install
-npm run build
-node dist/index.js
 ```
 
 ### Example Manifest File
@@ -42,13 +40,11 @@ The script is designed to work with any JSON file, recursively finding all value
 
 ## Development
 
-To build the script, you need to run the following command:
+To run the script, you need to run the following command:
 
 ```bash
-npm run build
+node src/index.js
 ```
-
-This will compile the TypeScript files into the `dist` directory.
 
 To run the tests, use:
 
