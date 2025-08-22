@@ -1,57 +1,38 @@
+import "dotenv/config"
 import assert from "assert";
-import { promises as fs } from "fs";
-import * as path from "path";
-import { extractPdfPathsFromManifest } from "./pdf-extractor.js";
+import { processManifest } from "./manifest.js";
 
-async function run() {
-  const manifestUrl = process.env.MANIFEST_URL;
-  const token = process.env.DOCS_REPO_PAT;
-
-  assert.ok(manifestUrl, "Environment variable MANIFEST_URL must be set");
-  assert.ok(token, "Environment variable DOCS_REPO_PAT must be set");
-
-  console.log(`Fetching manifest from: ${manifestUrl}`);
-
-  const response = await fetch(manifestUrl, {
-    headers: {
-      Authorization: `token ${token}`,
-      Accept: "application/vnd.github.v3.raw",
-    },
-  });
-
-  assert.ok(response.ok, `Manifest fetch should succeed (got ${response.status})`);
-
-  const manifest = await response.json();
-  const requiredDocs = extractPdfPathsFromManifest(manifest);
-
-  if (requiredDocs.length === 0) {
-    console.log("⚠️ No PDF documents are listed in the manifest. Nothing to check.");
-    return;
-  }
-
-  const missingFiles = [];
-
-  for (const doc of requiredDocs) {
-    const filePath = path.join(process.cwd(), doc);
-    try {
-      await fs.access(filePath);
-      console.log(`✅ File exists: ${doc}`);
-    } catch {
-      console.error(`❌ File missing: ${doc}`);
-      missingFiles.push(doc);
-    }
-  }
-
-  assert.strictEqual(
-    missingFiles.length,
-    0,
-    'Some required PDFs are missing.'
-  );
-
-  console.log("🎉 All checks passed");
+function getEnvVar(name) {
+  const value = process.env[name];
+  assert.ok(value, `Environment variable ${name} required`);
+  return value;
 }
 
-run().catch((err) => {
+async function main() {
+  const manifest_urls = getEnvVar("MANIFEST_URLS");
+  const token = getEnvVar("DOCS_REPO_PAT");
+
+  assert.ok(manifest_urls, "Environment variable MANIFEST_URLS required");
+  assert.ok(token, "Environment variable DOCS_REPO_PAT required");
+
+  const manifestUrls = manifest_urls.split(",").map((u) => u.trim()).filter(Boolean);
+
+  const manifestResults = await Promise.all(
+    manifestUrls.map((url) => processManifest(url, token))
+  );
+
+  const missingFilesAcrossManifests = manifestResults.flat();
+
+  assert.strictEqual(
+    missingFilesAcrossManifests.length,
+    0,
+    'Missing PDF files'
+  );
+
+  console.log("✅ All checks passed for all manifests 🎉");
+}
+
+main().catch((err) => {
   console.error(err.message);
   process.exit(1);
 });

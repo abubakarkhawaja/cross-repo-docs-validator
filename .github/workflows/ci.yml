@@ -3,7 +3,7 @@ name: 'Docs Validator CI'
 on: [push]
 
 jobs:
-  test_action:
+  docs-check:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout code'
@@ -25,7 +25,7 @@ jobs:
 
       - name: 'Run validation script'
         env:
-          MANIFEST_URL: ${{ secrets.MANIFEST_URL }}
+          MANIFEST_URLS: ${{ secrets.MANIFEST_URLS }}
           DOCS_REPO_PAT: ${{ secrets.DOCS_REPO_PAT }}
         run: |
           npm run start

@@ -43,7 +43,7 @@ The script is designed to work with any JSON file, recursively finding all value
 To run the script, you need to run the following command:
 
 ```bash
-node src/index.js
+npm run start
 ```
 
 To run the tests, use:
